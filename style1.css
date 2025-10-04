@@ -1,0 +1,182 @@
+* {
+    margin: 0; padding: 0; box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+body {
+    display: flex; justify-content: center; align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(to top, #89cff0, #a8dadc); /* Default sky gradient */
+    overflow: hidden; /* Hide overflowing animations */
+    position: relative;
+}
+
+/* --- Animated Background Elements --- */
+.sun {
+    position: absolute;
+    top: 50px; left: 10%;
+    width: 100px; height: 100px;
+    background-color: gold;
+    border-radius: 50%;
+    box-shadow: 0 0 40px 10px rgba(255, 215, 0, 0.7);
+    animation: sunShine 10s infinite alternate;
+    z-index: 0; /* Keep it behind the main content */
+}
+@keyframes sunShine {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1.05); opacity: 0.9; }
+}
+
+.cloud-1, .cloud-2 {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    z-index: 0;
+}
+.cloud-1 {
+    width: 150px; height: 50px;
+    top: 100px; left: -100px;
+    animation: moveClouds 25s linear infinite;
+}
+.cloud-1::before, .cloud-1::after {
+    content: ''; position: absolute;
+    background: white; border-radius: 50%;
+}
+.cloud-1::before { width: 80px; height: 80px; top: -30px; left: 20px; }
+.cloud-1::after { width: 100px; height: 100px; top: -50px; right: 20px; }
+
+.cloud-2 {
+    width: 200px; height: 70px;
+    top: 200px; right: -150px;
+    animation: moveClouds 35s linear infinite reverse;
+}
+.cloud-2::before, .cloud-2::after {
+    content: ''; position: absolute;
+    background: white; border-radius: 50%;
+}
+.cloud-2::before { width: 120px; height: 120px; top: -50px; left: 30px; }
+.cloud-2::after { width: 90px; height: 90px; top: -40px; right: 30px; }
+
+@keyframes moveClouds {
+    0% { transform: translateX(-100vw); }
+    100% { transform: translateX(200vw); }
+}
+
+.bird-1, .bird-2 {
+    position: absolute;
+    width: 30px; height: 20px; /* Represents a simple bird shape */
+    background: transparent;
+    border-top: 2px solid #333;
+    border-radius: 50%;
+    z-index: 0;
+}
+.bird-1 {
+    top: 80px; left: -50px;
+    animation: flyBirds 20s linear infinite;
+}
+.bird-2 {
+    top: 150px; right: -70px;
+    animation: flyBirds 25s linear infinite reverse;
+}
+@keyframes flyBirds {
+    0% { transform: translateX(-100vw) scaleX(1); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateX(200vw) scaleX(1); opacity: 0; }
+}
+
+
+/* --- Main Container & Weather Card (from previous version, slightly modified) --- */
+.container {
+    width: 90%; max-width: 400px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    position: relative; /* To make it appear above animations */
+    z-index: 1;
+}
+.search-box {
+    display: flex; width: 100%;
+}
+.search-box input {
+    flex-grow: 1; border: none; outline: none;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 12px; border-radius: 25px;
+    font-size: 16px; color: #333; margin-right: 10px;
+}
+.search-box button {
+    border: none; outline: none; background: #e67e22;
+    color: #fff; padding: 12px 20px; border-radius: 25px;
+    cursor: pointer; font-size: 16px; transition: background 0.3s ease;
+}
+.search-box button:hover { background: #d35400; }
+.weather-card {
+    margin-top: 20px; text-align: center; color: #fff;
+    transform: scale(0);
+    transition: transform 0.5s ease-in-out;
+}
+.weather-card.show { transform: scale(1); }
+.weather-card img { width: 120px; height: 120px; }
+.weather-card h1 { font-size: 4rem; margin: 0; }
+.weather-card h2 { font-size: 1.8rem; font-weight: 500; }
+.weather-card p { font-size: 1.2rem; }
+.error { color: #ffcc00; }
+
+/* --- Thank You Modal --- */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 10; /* Sit on top */
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    justify-content: center; align-items: center; /* Center content */
+}
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 30px;
+    border: 1px solid #888;
+    width: 80%; max-width: 400px;
+    border-radius: 15px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    transform: scale(0.8); /* Start smaller for pop animation */
+    opacity: 0;
+    animation: modalPopUp 0.3s forwards ease-out;
+}
+@keyframes modalPopUp {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.close-button {
+    color: #aaa;
+    position: absolute;
+    top: 10px; right: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+}
+.modal-content h2 {
+    color: #333;
+    margin-bottom: 10px;
+}
+.modal-content p {
+    color: #555;
+    font-size: 1.1em;
+}
